@@ -13,7 +13,7 @@ TIPSTER transfers the instrument sound of a reference recording to a source perf
 - **Timbre** captures the sound of the instrument.
 - **Residual** retains variation outside those two factors.
 
-At transfer time, TIPSTER combines the source structure and residual with the reference timbre, then decodes the sum in one pass. During training, contrastive examples share either the same passage or the same instrument. These pairs come from ASAP MIDI performances rendered as piano, harp, vibraphone, and xylophone.
+At transfer time, TIPSTER combines the source structure and residual with the reference timbre, then decodes the sum in one pass. During training, contrastive examples share either the same passage or the same instrument.
 
 <img width="1160" height="457" alt="image" src="https://github.com/user-attachments/assets/3f391993-440c-4bc2-a038-130cfc1e1023" />
 
