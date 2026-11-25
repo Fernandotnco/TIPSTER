@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="TIPSTER separates musical structure and instrument timbre in an audio autoencoder for direct timbre transfer.">
+<title>TIPSTER · Musical Timbre Transfer</title>
+<link rel="stylesheet" href="./styles.css">
+<script src="./audio-examples.js" defer></script>
+<script src="./listening.js" defer></script>
+</head>
+<body>
+<header class="site-header wrap">
+  <a class="wordmark" href="#top">TIPSTER</a>
+  <nav aria-label="Page sections"><a href="#listen">Listen</a><a href="#method">Method</a><a href="#results">Results</a></nav>
+</header>
+<main id="top">
+  <section class="hero wrap" aria-labelledby="title">
+    <div>
+      <p class="venue">LAMIR 2026 · Accepted paper</p>
+      <h1 id="title">Musical timbre<br>transfer with <em>TIPSTER</em></h1>
+      <p class="lede">Transfer the instrument sound from a reference recording to a source performance through direct editing of an audio autoencoder’s latent representation.</p>
+      <p class="paper-title">Disentangled Audio Representations: A Case Study in Timbre Transfer</p>
+      <p class="authors">Fernando Tonucci de Cerqueira Oliveira<br>Raphael Aroldo Carreiro Mendes · Flavio Vinicius Diniz de Figueiredo<br><span>Universidade Federal de Minas Gerais</span></p>
+      <div class="actions"><a class="primary" href="https://github.com/Fernandotnco/TIPSTER">GitHub repository</a><a href="https://lamir-workshop.github.io/schedule/#poster-session-1">Workshop program</a></div>
+    </div>
+    <figure class="transfer" aria-label="Timbre transfer combines structure from the source and timbre from the reference">
+      <div class="ingredients">
+        <div><span>Source performance</span><strong>Musical structure</strong></div>
+        <div><span>Reference recording</span><strong>Instrument timbre</strong></div>
+      </div>
+      <div class="connection"></div>
+      <div class="outcome"><span>TIPSTER output</span><strong>Source performance with reference timbre</strong></div>
+    </figure>
+  </section>
+  <section id="listen" class="panel wrap" aria-labelledby="listen-title">
+    <div class="section-heading"><h2 id="listen-title">Listen to the transfer</h2><p>Compare the source performance, the timbre reference, and outputs from TIPSTER and the AFTER baseline.</p></div>
+    <p id="audio-status" role="status">The examples need JavaScript to display the audio players.</p>
+    <div id="audio-examples" class="examples"></div>
+  </section>
+  <section id="method" class="panel wrap" aria-labelledby="method-title">
+    <div class="section-heading"><h2 id="method-title">How it works</h2></div>
+    <div class="method">
+      <article><h3>Encode</h3><p>A custom audio autoencoder maps each clip to a latent representation. TIPSTER decomposes it into structure, timbre, and a residual component.</p></article>
+      <article><h3>Recombine</h3><p>Using ConDe, the model learns additive components. At transfer time, it takes structure from the source and timbre from the reference.</p></article>
+      <article><h3>Decode</h3><p>The autoencoder reconstructs the edited clip in a single decoding pass. Training pairs come from ASAP MIDI performances rendered as piano, harp, xylophone, and vibraphone.</p></article>
+    </div>
+  </section>
+  <section id="results" class="panel wrap" aria-labelledby="results-title">
+    <div class="section-heading"><h2 id="results-title">Timbre-transfer results</h2><p>Evaluation on rendered ASAP excerpts.</p></div>
+    <div class="table-scroll" tabindex="0" aria-label="Benchmark results table">
+      <table>
+        <thead><tr><th scope="col">Model</th><th scope="col">Target instrument accuracy ↑</th><th scope="col">Mean transfer time ↓</th><th scope="col">Chroma DTW ↓</th><th scope="col">Onset correlation ↑</th></tr></thead>
+        <tbody>
+          <tr class="ours"><th scope="row">TIPSTER</th><td>97.5%</td><td>10 ms</td><td>0.077</td><td>0.787</td></tr>
+          <tr><th scope="row">AFTER</th><td>96.5%</td><td>701 ms</td><td>0.290</td><td>0.643</td></tr>
+          <tr><th scope="row">SS-VQ-VAE</th><td>24.6%</td><td>20 ms</td><td>0.292</td><td>0.063</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="caption">Instrument accuracy comes from a pretrained classifier. Chroma dynamic time warping and onset correlation compare the output with the source performance. Transfer times are benchmark measurements.</p>
+  </section>
+</main>
+<footer class="wrap footer"><span>TIPSTER · UFMG</span><a href="#top">Back to top</a></footer>
+</body>
+</html>
