@@ -1,22 +1,49 @@
 # TIPSTER
 
-Official implementation of TIPSTER: On Learning Additive Latent Representations for Timbre and Structure Transfer.
+This is the official repository for **Disentanglement of Audio Representations: A Case Study on Timbre Transfer**. Audio demos are available on the [TIPSTER project page](https://fernandotnco.github.io/TIPSTER/), where you can compare the source performance, timbre reference, TIPSTER output, and AFTER baseline.
 
-The code in this repository still needs to be cleaned and better documented for user application.
+## How TIPSTER works
 
-Audio samples can be found under samples/. They show the results of timbre transfer by TIPSTER and AFTER. Transfer was performed by combining the structure embedding in 'Song References' with the timbre embedding in 'Instrument References.
+<img width="1139" height="354" alt="image" src="https://github.com/user-attachments/assets/954d57b0-1aea-4893-b708-d8fa78a47019" />
 
-The table below links to the first 10 examples of the 128 random samples submmited.
 
-| ID | Instrument | Song | After | TIPSTER |
-|---|---|---|---|---|
-| 0 | [listen](https://anonymous.4open.science/r/tipsterreview/samples/Instrument%20Reference/ref2_000000.wav) | [listen](https://anonymous.4open.science/r/tipsterreview/samples/Song%20Reference/ref_000000.wav) | [listen](https://anonymous.4open.science/r/tipsterreview/samples/after%20transfer/after_000000.wav) | [listen](https://anonymous.4open.science/r/tipsterreview/samples/tipster%20transfer/conde_000000.wav) |
-| 1 | [listen](https://anonymous.4open.science/r/tipsterreview/samples/Instrument%20Reference/ref2_000001.wav) | [listen](https://anonymous.4open.science/r/tipsterreview/samples/Song%20Reference/ref_000001.wav) | [listen](https://anonymous.4open.science/r/tipsterreview/samples/after%20transfer/after_000001.wav) | [listen](https://anonymous.4open.science/r/tipsterreview/samples/tipster%20transfer/conde_000001.wav) |
-| 2 | [listen](https://anonymous.4open.science/r/tipsterreview/samples/Instrument%20Reference/ref2_000002.wav) | [listen](https://anonymous.4open.science/r/tipsterreview/samples/Song%20Reference/ref_000002.wav) | [listen](https://anonymous.4open.science/r/tipsterreview/samples/after%20transfer/after_000002.wav) | [listen](https://anonymous.4open.science/r/tipsterreview/samples/tipster%20transfer/conde_000002.wav) |
-| 3 | [listen](https://anonymous.4open.science/r/tipsterreview/samples/Instrument%20Reference/ref2_000003.wav) | [listen](https://anonymous.4open.science/r/tipsterreview/samples/Song%20Reference/ref_000003.wav) | [listen](https://anonymous.4open.science/r/tipsterreview/samples/after%20transfer/after_000003.wav) | [listen](https://anonymous.4open.science/r/tipsterreview/samples/tipster%20transfer/conde_000003.wav) |
-| 4 | [listen](https://anonymous.4open.science/r/tipsterreview/samples/Instrument%20Reference/ref2_000004.wav) | [listen](https://anonymous.4open.science/r/tipsterreview/samples/Song%20Reference/ref_000004.wav) | [listen](https://anonymous.4open.science/r/tipsterreview/samples/after%20transfer/after_000004.wav) | [listen](https://anonymous.4open.science/r/tipsterreview/samples/tipster%20transfer/conde_000004.wav) |
-| 5 | [listen](https://anonymous.4open.science/r/tipsterreview/samples/Instrument%20Reference/ref2_000005.wav) | [listen](https://anonymous.4open.science/r/tipsterreview/samples/Song%20Reference/ref_000005.wav) | [listen](https://anonymous.4open.science/r/tipsterreview/samples/after%20transfer/after_000005.wav) | [listen](https://anonymous.4open.science/r/tipsterreview/samples/tipster%20transfer/conde_000005.wav) |
-| 6 | [listen](https://anonymous.4open.science/r/tipsterreview/samples/Instrument%20Reference/ref2_000006.wav) | [listen](https://anonymous.4open.science/r/tipsterreview/samples/Song%20Reference/ref_000006.wav) | [listen](https://anonymous.4open.science/r/tipsterreview/samples/after%20transfer/after_000006.wav) | [listen](https://anonymous.4open.science/r/tipsterreview/samples/tipster%20transfer/conde_000006.wav) |
-| 7 | [listen](https://anonymous.4open.science/r/tipsterreview/samples/Instrument%20Reference/ref2_000007.wav) | [listen](https://anonymous.4open.science/r/tipsterreview/samples/Song%20Reference/ref_000007.wav) | [listen](https://anonymous.4open.science/r/tipsterreview/samples/after%20transfer/after_000007.wav) | [listen](https://anonymous.4open.science/r/tipsterreview/samples/tipster%20transfer/conde_000007.wav) |
-| 8 | [listen](https://anonymous.4open.science/r/tipsterreview/samples/Instrument%20Reference/ref2_000008.wav) | [listen](https://anonymous.4open.science/r/tipsterreview/samples/Song%20Reference/ref_000008.wav) | [listen](https://anonymous.4open.science/r/tipsterreview/samples/after%20transfer/after_000008.wav) | [listen](https://anonymous.4open.science/r/tipsterreview/samples/tipster%20transfer/conde_000008.wav) |
-| 9 | [listen](https://anonymous.4open.science/r/tipsterreview/samples/Instrument%20Reference/ref2_000009.wav) | [listen](https://anonymous.4open.science/r/tipsterreview/samples/Song%20Reference/ref_000009.wav) | [listen](https://anonymous.4open.science/r/tipsterreview/samples/after%20transfer/after_000009.wav) | [listen](https://anonymous.4open.science/r/tipsterreview/samples/tipster%20transfer/conde_000009.wav) |
+TIPSTER transfers the instrument sound of a reference recording to a source performance while aiming to preserve the source’s notes and timing. A shared audio autoencoder works on complex spectrograms. ConDe splits each latent representation into three additive components.
+
+- **Structure** captures what is played, including pitch and timing.
+- **Timbre** captures the sound of the instrument.
+- **Residual** retains variation outside those two factors.
+
+At transfer time, TIPSTER combines the source structure and residual with the reference timbre, then decodes the sum in one pass. During training, contrastive examples share either the same passage or the same instrument. These pairs come from ASAP MIDI performances rendered as piano, harp, vibraphone, and xylophone.
+
+<img width="1160" height="457" alt="image" src="https://github.com/user-attachments/assets/3f391993-440c-4bc2-a038-130cfc1e1023" />
+
+
+## Evaluation
+
+Timbre transfer was evaluated on a composer-disjoint ASAP test set. Target instrument accuracy measures whether an instrument classifier recognizes the intended timbre. Chroma DTW and onset correlation measure preservation of pitch-class content and timing, respectively.
+
+| Model | Target instrument accuracy ↑ | Mean transfer time ↓ | Chroma DTW ↓ | Onset correlation ↑ |
+| --- | ---: | ---: | ---: | ---: |
+| **TIPSTER** | **97.5%** | **10 ms** | **0.077** | **0.787** |
+| AFTER | 96.5% | 701 ms | 0.290 | 0.643 |
+| SS-VQ-VAE | 24.6% | 20 ms | 0.292 | 0.063 |
+
+The paper also evaluates the latent components with Synesis. Probes predict chords and notes well from the structure component, which still contains some timbre information.
+
+## Code and training
+
+| Path | Purpose |
+| --- | --- |
+| [`src/timbre_train.py`](src/timbre_train.py) | Loads the configuration and starts training |
+| [`src/config/timbre_asap_paired.py`](src/config/timbre_asap_paired.py) | Example configuration for training with paired ASAP audio |
+| [`src/data/asap_triplet.py`](src/data/asap_triplet.py) | Loads rendered ASAP audio and samples training triplets |
+| [`src/models/music_autoencoder.py`](src/models/music_autoencoder.py) and [`src/models/conde.py`](src/models/conde.py) | Implement the audio autoencoder and latent decomposition |
+| [`src/conde_trainer.py`](src/conde_trainer.py) | Applies the training objectives and runs training steps |
+
+The supplied configuration resumes training from a checkpoint. Point the dataset loader to your rendered ASAP HDF5 and split JSON, then set the checkpoint and output paths in the configuration. Run the training script from `src/` with the paired ASAP configuration.
+
+```sh
+cd src
+python timbre_train.py --config_module config.timbre_asap_paired
+```
+
